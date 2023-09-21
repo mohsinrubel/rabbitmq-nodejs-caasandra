@@ -164,3 +164,39 @@ Run this application using comand
 ```
 docker compose up
 ```
+## Database
+### cassandra database setup using docker compose
+
+```
+version: '3'
+services:
+  cassandra:
+    image: cassandra:latest
+    restart: always
+    ports:
+      - 9042:9042
+      - 7000:7000
+    environment:
+      - CASSANDRA_BROADCAST_ADDRESS=192.168.1.190
+      - CASSANDRA_CLUSTER_NAME=cassandra-cluster
+      - CASSANDRA_DC=datacenter1
+      - CASSANDRA_ENDPOINT_SNITCH=GossipingPropertyFileSnitch
+     # - CASSANDRA_SEEDS=<seed_node_ip1>,<seed_node_ip2>
+      - CASSANDRA_USER=my_username
+      - CASSANDRA_PASSWORD=my_password
+    volumes:
+      - ./data:/var/lib/cassandra
+    networks:
+       - app-network
+
+  #Docker Networks
+#docker network create app-network
+networks:
+  app-network:
+    driver: bridge
+    external: true
+#Volumes
+volumes:
+  dbdata:
+    driver: local
+```
