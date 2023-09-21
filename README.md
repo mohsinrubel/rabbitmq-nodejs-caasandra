@@ -87,7 +87,7 @@ services:
       - '5672:5672'
       - '15672:15672'
     networks:
-      - app-network
+      - server-network
     env_file:
       - .env
 
@@ -103,7 +103,7 @@ services:
       - .:/usr/src/app # any change to base folder should be reflected
       - /usr/src/app/node_modules
     networks:
-      - app-network
+      - server-network
     command: npm run start:dev auth # overrides CMD from dockerfile
 
   api:
@@ -121,14 +121,13 @@ services:
       - .:/usr/src/app # any change to base folder should be reflected
       - /usr/src/app/node_modules
     networks:
-      - app-network
+      - server-network
     command: npm run start:dev api
 
  
 #Docker Networks
-# docker network create app-network
 networks:
-  app-network:
+  server-network:
     driver: bridge
     external: true
 #Volumes
